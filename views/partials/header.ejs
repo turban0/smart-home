@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Hajsback</title>
+  <title>SmartHome</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="components/angular-material/angular-material.css">
@@ -32,18 +32,21 @@
 <body layout="column" ng-app="smartHomeApp" ng-controller="appController">
     <md-toolbar id="header" layout="row" layout-align="space-between center">
         <div class="md-toolbar-tools">
-            <h1>SmartHome :: <%-pageTitle%></h1>
+            <h1><a href="/">SmartHome :: <%-pageTitle%></a></h1>
         </div>
+        <div id="loginInfo" class="md-toolbar-tools" >
         <% if (user) { %>
-            <div id="loginInfo" class="md-toolbar-tools" >
-                <span class="md-body-2 floatRight">Logged as local:<%= user.name %></span>
-                <a href="/logout" class="md-button md-raised" title="Log out">Log out</a>
-            </div>
+            <span class="md-body-2 floatRight">Logged as <%= user.name %></span>
+            <a href="/logout" class="md-button md-raised" title="Log out">Log out</a>
+        <% } else {%>
+            <a href="/signup" class="md-button md-raised" title="Sign up">Sign up</a>
+            <a href="/login" class="md-button md-raised" title="Log in">Log in</a>
         <% } %>
+        </div>        
     </md-toolbar>
     
     <div layout="row" flex>
-        <% if (typeof(leftMenuHidden) === "undefined" || (typeof(leftMenuHidden) !== "undefined" && !leftMenuHidden)) { %>
+        <% if (user) { %>
             <md-sidenav id="leftMenu" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('min-width: 640px')">
                 <md-content>
                     <ul>

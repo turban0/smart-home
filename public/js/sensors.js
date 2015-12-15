@@ -1,95 +1,52 @@
 /* global dataForAngular */
 (function (angular, hajsApp) {
-    smartHomeApp.controller('viewController', ['$scope', '$mdDialog', '$mdToast','$resource', function($scope, $mdDialog, $mdToast, $resource) {
-        $scope.items = viewInitData.settlements;
+    smartHomeApp.controller('viewController', ['$scope', '$mdDialog','$resource', function($scope, $mdDialog, $resource) {
+        //$scope.sensors = viewInitData.sensors;
+        $scope.sensors = [{
+            id          : 0,
+            name        : "sensor1",
+            type        : "TEMPERATURE",
+            switchable  : true,
+            address     : "192.168.1.1",
+            addressType : "IP"
+        }];
         
         $scope.refresh = function(){
-            $resource('api/getSettlements').query().$promise.then(function(data){
-                $scope.items = data;
+            $resource('api/sensor/getAll').query().$promise.then(function(response){
+                $scope.sensors = response.data;
             });
-        }
+        }                
         
-        $scope.modalDialog = {
-            title: ''
-        };
+        $scope.showRemoveDialog = function (sensor) {
+            function removeSensor(){
+                return $resource('api/sensor/remove/' + sensor.id).save().$promise;
+            }
+            $scope.showConfirmationDialog(removeSensor, "Remove sensor", "Are you sure to remove sensor " + sensor.title);
+        };        
         
-        $scope.add = function ($event) {
-            $scope.modalDialog.title = 'Add Debt';
-            $scope.showDialog($event);
-        };
-        
-        $scope.remove = function ($event) {
-            $scope.modalDialog.title = 'Pay Debt';
-            $scope.showDialog($event);
-        };
-        
-        $scope.save = function (item) {
-            // TODO Back-end service
-            console.log(item);
-            $scope.items.push(item);
-            $mdToast.show($mdToast.simple().content('Debt added'));
-        };
-        
-        $scope.showNotification = function () {
-            $mdToast.show($mdToast.simple().content('Pay Debt, Stupid!'));
-        };
-        
-        $scope.showDialog = function ($event) {
+        $scope.showConfirmationDialog = function (submitFn, heading, text) {
             var parentEl = angular.element(document.body);
             
             $mdDialog.show({
-                parent: parentEl,
-                targetEvent: $event,
-                templateUrl: 'partials/settlementDialog.html',
+                parent: parentEl,               
+                templateUrl: 'partials/confirmationDialog.html',
                 locals: {
-                    save: $scope.save
+                    submit: function(){
+                        submitFn().then($mdDialog.hide);
+                    },
+                    content: {
+                        heading: heading,
+                        text: text
+                    }                    
                 },
                 escapeToClose: true,
                 disableParentScroll: true,
-                controller: DialogController
-            });
-
-        function DialogController($scope, $mdDialog, save) {
-            function closeDialog() {
-                $mdDialog.hide();
-            }
-            
-            $scope.submit = function () {
-                if (!$scope.settlement.user) {
-                    return;
+                controller: function($scope, $mdDialog, submit, content){
+                    $scope.submit = submit;
+                    $scope.content = content;
+                    $scope.cancel = $mdDialog.hide;
                 }
-                
-                $scope.settlement.name = $scope.settlement.user.name;
-
-                closeDialog();
-                save($scope.settlement);
-            };
-            
-            $scope.users = [
-                {name: 'Paweł'}, {name: 'Tomasz'}, {name: 'Kacpusz'}, {name: 'Turban'}, { name: 'Piotr' }, {name: 'Gaca'}
-            ];
-            
-            $scope.getMatches = function (searchText) {
-                var matches = [];
-                
-                $scope.users.forEach(function(item) {
-                    if (item.name.toLowerCase().indexOf(searchText) > -1) {
-                        matches.push(item);
-                    }
-                });
-                
-                return matches;
-            };
-            
-            $scope.settlement = {
-                id: 1,
-                name: '',
-                user: null,
-                value: '',
-                imageSrc: '',
-                changeDate: new Date()
-            };
-        }
-      };
+            });        
+        };
     }]);
-}(angular, hajsApp));
+}(angular, smartHomeApp));

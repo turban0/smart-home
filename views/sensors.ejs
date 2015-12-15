@@ -2,45 +2,29 @@
 <%- include('partials/header') %>
 
 <!-- FAB button -->
-<md-fab-speed-dial md-direction="up" class="md-fling md-hover-full md-fab-bottom-right">
-    <md-fab-trigger>
-        <md-button class="md-accent md-fab">
-            <md-tooltip md-direction="left" md-visible="tooltipVisible" md-autohide="false">Menu</md-tooltip>
-            <md-icon md-font-library="material-icons">menu</md-icon>
-        </md-button>
-    </md-fab-trigger>
-    
-    <md-fab-actions>
-        <md-button class="md-fab md-raised md-mini" ng-click="add($event)" aria-label="add debt">
-            <md-tooltip md-direction="left" md-visible="tooltipVisible" md-autohide="false">Add Debt</md-tooltip>
-            <md-icon md-font-library="material-icons" aria-label="add debt">add_circle</md-icon>
-        </md-button>
-        
-        <md-button class="md-fab md-raised md-mini" ng-click="remove($event)" aria-label="remove debt">
-            <md-tooltip md-direction="left" md-visible="tooltipVisible" md-autohide="false">Remove Debt</md-tooltip>
-            <md-icon md-font-library="material-icons" aria-label="remove debt">remove_circle</md-icon>
-        </md-button>
-    </md-fab-actions>
-</md-fab-speed-dial>
+
+    <md-button class="md-accent md-fab md-hover-full md-fab-bottom-right">
+        <md-tooltip md-direction="left" md-visible="tooltipVisible" md-autohide="false">Add</md-tooltip>
+        <md-icon md-font-library="material-icons">add</md-icon>
+    </md-button>
 <!-- end FAB button -->
 
 <md-content layout="column" flex class="md-padding">
     <md-toolbar md-scroll-shrink  layout="row" layout-align="space-between center">
-        <div class="md-toolbar-tools">Debts</div>
+        <div class="md-toolbar-tools">Sensors management</div>
         <div><md-button class="md-primary md-raised floatRight" ng-click="refresh()">Refresh</md-button></div>
     </md-toolbar>
 
-    <md-list>
-        <md-list-item ng-repeat="item in items">
-            <img alt="{{item.name}}" ng-src="{{item.imageSrc}}" class="md-avatar" />
-            
-            <p>{{item.name}}</p>
-            <p>{{item.changeDate}}</p>
-            <p>{{item.value}}</p>
+    <md-list ng-if="sensors">
+        <md-list-item ng-repeat="sensor in sensors">            
+            <p>{{sensor.name}}</p>
+            <p>{{isensortem.type}}</p>
+            <p>{{sensor.addressType}}:{{sensor.address}}</p>
 
-            <md-button class="md-primary md-raised" ng-click="showNotification()">Pay Debt</md-button>
+            <md-button class="md-primary md-raised" ng-click="showRemoveDialog(sensor)">Remove</md-button>
         </md-list-item>
     </md-list>
+    <h3 ng-if="!sensors">No sensors found</h3>
 </md-content>
 
 <%- include('partials/footer', {scripts: ["js/sensors.js"]}) %> 

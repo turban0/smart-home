@@ -1,18 +1,20 @@
 <% locals.pageTitle = "Homepage"; %> 
 <%- include('partials/header') %>
 
-<a href="/login" class="inherit">Log in</a>
-<% if (user) { %>
-	<a href="/logout" class="inherit">Log out</a>
-<% } %>
+<md-content layout="column" flex class="md-padding">
+    <md-toolbar md-scroll-shrink  layout="row" layout-align="space-between center">
+        <div class="md-toolbar-tools">Sensors</div>
+        <div><md-button class="md-primary md-raised floatRight" ng-click="refresh()">Refresh</md-button></div>
+    </md-toolbar>
 
-<ol>
-	<li ng-repeat="sensor in sensors">
-		<h3>{{sensor.name}}</h3>
-		<span>{{sensor.type}}</span>&nbsp;<span>{{sensor.addressType}}:{{sensor.address}}</span>
-	</li>
-	<li ng-if="sensors">No sensors found</li>
-</ol>
-<button ng-click="refresh()">Refresh sensors</button>
+    <md-list ng-if="sensors">
+        <md-list-item ng-repeat="sensor in sensors">            
+            <p>{{sensor.name}}</p>
+            <p>{{isensortem.type}}</p>
+            <p>{{sensor.addressType}}:{{sensor.address}}</p>
+        </md-list-item>
+    </md-list>
+    <h3 ng-if="!sensors">No sensors found</h3>
+</md-content>
 
 <%- include('partials/footer', {scripts: ["js/index.js"]}) %> 

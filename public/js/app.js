@@ -15,7 +15,7 @@ var smartHomeApp = (function (angular) {
         $scope.pageTitle = pageTitle;    
         $scope.leftMenuItems = [
             {name: 'Homepage', url: '/'},
-            {name: 'Sensors', url: '/sensors'}
+            {name: 'Sensors management', url: '/sensors'}
         ]    
     }]);
     

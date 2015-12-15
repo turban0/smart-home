@@ -5,13 +5,17 @@ module.exports = function(app) {
 		services.sensor.getAll().then(function(data){
 			res.json({data:data});
 		});    
-  });
-
+	});
+	
 	app.get('/api/sensor/get/:id', function(req, res) {
 		services.sensor.get(req.params.id).then(res.json);    
-  });
+	});
+
+	app.post('/api/sensor/remove/:id', isLoggedIn, function(req, res) {
+		services.sensor.remove(req.params.id).then(res.json);    
+ 	});
   
-	app.post('/api/sensor/put', function(req, res) {
+	app.post('/api/sensor/put', isLoggedIn, function(req, res) {
 		var sensor = {
 			name        : req.body.name,
 			type        : req.body.type,
@@ -20,8 +24,8 @@ module.exports = function(app) {
 			addressType : req.body.addressType
 		};
 		services.sensor.put(sensor).then(res.json);    
-  });   
-  app.post('/api/sensor/update/:id', function(req, res) {
+	});   
+	app.post('/api/sensor/update/:id', isLoggedIn, function(req, res) {
 		var sensor = {
 			name        : req.body.name,
 			type        : req.body.type,
@@ -30,7 +34,7 @@ module.exports = function(app) {
 			addressType : req.body.addressType
 		};
 		services.sensor.update(req.params.id, sensor).then(res.json);    
-  });     
+	});     
 };
 
 function isLoggedIn(req, res, next) {

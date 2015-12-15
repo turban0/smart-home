@@ -21,7 +21,7 @@ module.exports = {
 		return Sensor.findOneAndUpdate({'id': id}, sensor, {upsert:true})
 	},
 	remove: function(id){
-		return Sensor.remove({'id': id});
+		return Sensor.removeAsync({'id': id});
 	},
 }
 
