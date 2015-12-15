@@ -3,7 +3,7 @@
 
 <!-- FAB button -->
 
-    <md-button class="md-accent md-fab md-hover-full md-fab-bottom-right">
+    <md-button ng-disabled="loadingSensors" class="md-accent md-fab md-hover-full md-fab-bottom-right">
         <md-tooltip md-direction="left" md-visible="tooltipVisible" md-autohide="false">Add</md-tooltip>
         <md-icon md-font-library="material-icons">add</md-icon>
     </md-button>
@@ -15,16 +15,20 @@
         <div><md-button class="md-primary md-raised floatRight" ng-click="refresh()">Refresh</md-button></div>
     </md-toolbar>
 
-    <md-list ng-if="sensors">
+    <md-list ng-if="sensors && !loadingSensors">
         <md-list-item ng-repeat="sensor in sensors">            
             <p>{{sensor.name}}</p>
             <p>{{isensortem.type}}</p>
             <p>{{sensor.addressType}}:{{sensor.address}}</p>
 
-            <md-button class="md-primary md-raised" ng-click="showRemoveDialog(sensor)">Remove</md-button>
+            <md-button class="md-primary md-raised" ng-click="remove(sensor)">Remove</md-button>
         </md-list-item>
     </md-list>
     <h3 ng-if="!sensors">No sensors found</h3>
 </md-content>
+
+<div layout="row" layout-sm="column" layout-align="space-around">
+    <md-progress-circular ng-if="loadingSensors" md-mode="indeterminate" md-diameter="80px"></md-progress-circular>
+</div>
 
 <%- include('partials/footer', {scripts: ["js/sensors.js"]}) %> 

@@ -2,9 +2,11 @@ var services = require('./backendServices');
 
 module.exports = function(app) {
 	app.get('/api/sensor/getAll', function(req, res) {
-		services.sensor.getAll().then(function(data){
-			res.json({data:data});
-		});    
+		setTimeout(function(){
+			services.sensor.getAll().then(function(data){
+				res.json({data:data});
+			}); 
+		}, 1000)    
 	});
 	
 	app.get('/api/sensor/get/:id', function(req, res) {
@@ -12,7 +14,9 @@ module.exports = function(app) {
 	});
 
 	app.post('/api/sensor/remove/:id', isLoggedIn, function(req, res) {
-		services.sensor.remove(req.params.id).then(res.json);    
+		setTimeout(function(){
+			services.sensor.remove(req.params.id).then(res.end);
+		}, 1000)    
  	});
   
 	app.post('/api/sensor/put', isLoggedIn, function(req, res) {
@@ -23,7 +27,7 @@ module.exports = function(app) {
 			address     : req.body.address,
 			addressType : req.body.addressType
 		};
-		services.sensor.put(sensor).then(res.json);    
+		services.sensor.put(sensor).then(res.send);    
 	});   
 	app.post('/api/sensor/update/:id', isLoggedIn, function(req, res) {
 		var sensor = {
@@ -33,7 +37,7 @@ module.exports = function(app) {
 			address     : req.body.address,
 			addressType : req.body.addressType
 		};
-		services.sensor.update(req.params.id, sensor).then(res.json);    
+		services.sensor.update(req.params.id, sensor).then(res.send);    
 	});     
 };
 

@@ -12,41 +12,26 @@
         }];
         
         $scope.refresh = function(){
-            $resource('api/sensor/getAll').query().$promise.then(function(response){
+            $scope.loadingSensors = true;
+            $resource('api/sensor/getAll').get().$promise.then(function(response){
+                console.log(response);
                 $scope.sensors = response.data;
+                $scope.loadingSensors = false;;
             });
         }                
         
-        $scope.showRemoveDialog = function (sensor) {
-            function removeSensor(){
-                return $resource('api/sensor/remove/' + sensor.id).save().$promise;
-            }
-            $scope.showConfirmationDialog(removeSensor, "Remove sensor", "Are you sure to remove sensor " + sensor.title);
+        $scope.remove = function (sensor) {            
+            var confirm = $mdDialog.confirm()
+                .title("Remove sensor")
+                .content("Are you sure to remove sensor " + sensor.name)
+                .ariaLabel("Remove sensor")
+                .ok("Remove")
+                .cancel("Cancel");
+                
+            $mdDialog.show(confirm).then(function() {
+                $scope.loadingSensors = true;
+                $resource('api/sensor/remove/' + sensor.id).save().$promise.then($scope.refresh)
+            });
         };        
-        
-        $scope.showConfirmationDialog = function (submitFn, heading, text) {
-            var parentEl = angular.element(document.body);
-            
-            $mdDialog.show({
-                parent: parentEl,               
-                templateUrl: 'partials/confirmationDialog.html',
-                locals: {
-                    submit: function(){
-                        submitFn().then($mdDialog.hide);
-                    },
-                    content: {
-                        heading: heading,
-                        text: text
-                    }                    
-                },
-                escapeToClose: true,
-                disableParentScroll: true,
-                controller: function($scope, $mdDialog, submit, content){
-                    $scope.submit = submit;
-                    $scope.content = content;
-                    $scope.cancel = $mdDialog.hide;
-                }
-            });        
-        };
     }]);
 }(angular, smartHomeApp));
