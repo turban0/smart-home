@@ -1,0 +1,38 @@
+{
+  "name": "smart-home",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turban0/smart-home.git"
+  },
+  "author": "turban0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turban0/smart-home/issues"
+  },
+  "homepage": "https://github.com/turban0/smart-home",
+  "dependencies": {
+    "bcrypt-nodejs": "latest",
+    "bluebird": "^3.0.5",
+    "body-parser": "~1.0.0",
+    "bson": "^0.4.19",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.0.0",
+    "ejs": "^2.3.4",
+    "express": "~4.0.0",
+    "express-session": "~1.0.0",
+    "mongoose": "^3.9.7",
+    "mongoose-promised": "^0.1.0",
+    "neo4j": "latest",
+    "passport": "~0.1.17",
+    "passport-facebook": "^2.0.0",
+    "passport-google-oauth": "^0.2.0",
+    "passport-local": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

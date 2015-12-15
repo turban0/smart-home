@@ -1,0 +1,11 @@
+{
+  "name": "smart-home",
+  "directory": "/public/components",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-material": "~0.11.4",
+    "angular-resource": "~1.4.7"
+  }
+}

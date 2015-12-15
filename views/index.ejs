@@ -1,0 +1,18 @@
+<% locals.pageTitle = "Homepage"; %> 
+<%- include('partials/header') %>
+
+<a href="/login" class="inherit">Log in</a>
+<% if (user) { %>
+	<a href="/logout" class="inherit">Log out</a>
+<% } %>
+
+<ol>
+	<li ng-repeat="sensor in sensors">
+		<h3>{{sensor.name}}</h3>
+		<span>{{sensor.type}}</span>&nbsp;<span>{{sensor.addressType}}:{{sensor.address}}</span>
+	</li>
+	<li ng-if="sensors">No sensors found</li>
+</ol>
+<button ng-click="refresh()">Refresh sensors</button>
+
+<%- include('partials/footer', {scripts: ["js/index.js"]}) %> 

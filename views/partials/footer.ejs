@@ -1,0 +1,19 @@
+        </md-content>
+    </div>
+    
+    <script>
+        var message = "<%= message %>";     
+        var pageTitle = "<%= pageTitle %>";
+        <% if(typeof(viewInitData) !== "undefined") { %>
+            var viewInitData = <%- JSON.stringify(viewInitData) %>;
+        <% } %>  
+    </script>
+    
+    <script src="js/app.js"></script>
+    <% if(typeof(scripts) !== "undefined") { %>
+        <% scripts.forEach(function(script){ %>
+            <script src="<%- script %>"></script>
+        <% });%>
+    <% } %>    
+</body>
+</html>
